@@ -1,0 +1,35 @@
+name: Artifact Pipeline CI
+
+on: [push, workflow_dispatch]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.13'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run tests
+        run: |
+          pytest tests/
+
+      - name: Build and package to zip
+        run: |
+          mkdir -p output
+          cp -r file_writter.py output/
+          zip -r build.zip output
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-zip
+          path: build.zip
