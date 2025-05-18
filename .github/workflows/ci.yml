@@ -26,7 +26,7 @@ jobs:
       - name: Build and package to zip
         run: |
           mkdir -p output
-          cp -r file_writter.py output/
+          cp -r file1.py output/
           zip -r build.zip output
       - name: Upload artifact
         uses: actions/upload-artifact@v4
